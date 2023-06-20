@@ -7,6 +7,8 @@ const Signup = () => {
   const [phonenumber, phonenumberchange] = useState("");
   const [email, emailchange] = useState("");
   const [password, passwordchange] = useState("");
+  const [role, rolechange] = useState("");
+  const [licencenumber, licencenumberchange] = useState("");
 
   const Validate = () => {
     let isproceed = true;
@@ -38,7 +40,11 @@ const Signup = () => {
       isproceed = false;
       errormessage += "\nPassword should contain at least one uppercase letter";
     }
-
+    if (role === "driver" && (licencenumber === "" || licencenumber.trim() === "")) {
+        isproceed = false;
+        errormessage += "\nLicense Number";
+      }
+  
     if (!isproceed) {
       toast.warning(errormessage);
     }
@@ -98,6 +104,31 @@ const Signup = () => {
                         className="form-control"
                       ></input>
                     </div>
+
+                    <div>
+                      <label>Role:</label>
+                      <select
+                        value={role}
+                        onChange={(e) => rolechange (e.target.value)}
+                        className="form-control"
+                      >
+                        <option value="passenger">Passenger</option>
+                        <option value="driver">Driver</option>
+                      </select>
+                    </div>
+                    {role === "driver" && (
+                      <div>
+                        <label>
+                          License Number<span className="errmsg">*</span>
+                        </label>
+                        <input
+                          value={licencenumber}
+                          onChange={(e) => licencenumberchange (e.target.value)}
+                          type="text"
+                          className="form-control"
+                        ></input>
+                      </div>
+                    )}
                     <div>
                       <label>
                         Phone Number<span className="errmsg">*</span>
