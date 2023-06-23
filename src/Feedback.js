@@ -21,7 +21,7 @@ function App() {
 
   const handleSubmit = () => {
     if (currentValue === 0) {
-      toast.error("Kindly provide your rating from 1-5 stars");
+      toast.error("Kindly provide your rating between 1-5 stars");
       return;
     }
     toast.success("Thanks for your feedback"); 
@@ -30,7 +30,7 @@ function App() {
   return (
     <div className="container d-flex flex-column align-items-center justify-content-center vh-100">
       <h2>How would you rate your ride?</h2>
-      <h4>Select 1-5 stars</h4>
+      <h4>Select between 1-5 stars</h4>
       <div className="d-flex">
         {stars.map((_, index) => (
           <FaStar
