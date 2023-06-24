@@ -16,7 +16,7 @@ class App extends Component {
         this.handleError
       );
     } else {
-      this.setState({ error: "Current Location Unavailable" });
+      this.setState({ error: "Geolocation is not supported by your browser" });
     }
   }
 
