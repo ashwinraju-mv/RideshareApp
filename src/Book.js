@@ -39,7 +39,7 @@ class App extends Component {
   getLocationFromCoordinates = () => {
     const { latitude, longitude } = this.state;
     if (latitude && longitude) {
-      const apiKey = "AIzaSyBSHAEAtt8pitrtIdnqxcKyrbguLx414WE";
+      const apiKey = "AIzaSyBcwCJooTXCte7fDDDvswC6_XYaKwLQ2_o";
       const geocodingApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}`;
 
       fetch(geocodingApiUrl)
