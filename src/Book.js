@@ -6,7 +6,8 @@ class App extends Component {
     longitude: null,
     error: null,
     location: "",
-    destination: ""
+    destination: "",
+    isInputEnabled: false
   };
 
   componentDidMount() {
@@ -16,20 +17,48 @@ class App extends Component {
         this.handleError
       );
     } else {
-      this.setState({ error: "Geolocation is not supported by your browser" });
+      this.setState({ error: "Current Location Unavailable" });
     }
   }
 
   handleSuccess = (position) => {
-    this.setState({
-      latitude: position.coords.latitude,
-      longitude: position.coords.longitude,
-      error: null
-    });
+    const { latitude, longitude } = position.coords;
+    this.setState(
+      {
+        latitude,
+        longitude,
+        error: null
+      }
+    );
   };
 
   handleError = (error) => {
     this.setState({ error: error.message });
+  };
+
+  getLocationFromCoordinates = () => {
+    const { latitude, longitude } = this.state;
+    if (latitude && longitude) {
+      const apiKey = "AIzaSyBSHAEAtt8pitrtIdnqxcKyrbguLx414WE";
+      const geocodingApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}`;
+
+      fetch(geocodingApiUrl)
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.status === "OK" && data.results.length > 0) {
+            const formattedAddress = data.results[0].formatted_address;
+            this.setState({ location: formattedAddress });
+          }
+        })
+        .catch((error) => {
+          console.error("Error retrieving location:", error);
+        });
+    }
+  };
+
+  handleGetLocation = () => {
+    this.getLocationFromCoordinates();
+    this.setState({ isInputEnabled: true });
   };
 
   handleLocationChange = (event) => {
@@ -43,7 +72,7 @@ class App extends Component {
   };
 
   render() {
-    const { latitude, longitude, error, location, destination } = this.state;
+    const { location, isInputEnabled } = this.state;
 
     return (
       <div>
@@ -55,12 +84,9 @@ class App extends Component {
             id="location"
             value={location}
             onChange={this.handleLocationChange}
+            disabled={!isInputEnabled}
           />
-          {latitude && longitude && (
-            <button onClick={() => this.setState({ location: `${latitude}, ${longitude}` })}>
-              Use Current Location
-            </button>
-          )}
+          <button onClick={this.handleGetLocation}>Get Current Location</button>
         </div>
       </div>
     );
